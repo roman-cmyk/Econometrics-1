@@ -1,0 +1,206 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[13]:
+
+
+import pandas as pd
+import math
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+# In[16]:
+
+
+Data = pd.read_csv('/users/fedorslegtenhorst/downloads/TestExer1-holiday expenditures-round2.csv', sep = ';')
+Data.head()
+
+
+# In[17]:
+
+
+Y = Data.Expenditures # the dependent variable 
+X = Data.Age # the independent variable
+
+
+# In[18]:
+
+
+#coefficient b
+b = ((X*Y).mean() - X.mean()*Y.mean()) / ((X**2).mean() - (X.mean())**2)
+print("Value of b is: ",b)
+
+
+# In[19]:
+
+
+X_bar = Data.Age.mean() # sample mean of age
+Y_bar = Data.Expenditures.mean() # sample mean of expenditures print("Mean Age : ", X_bar)
+print("Mean Expenditure : ", Y_bar)
+
+
+# In[20]:
+
+
+a = Y_bar - b*X_bar
+print("Value of a : ", a)
+
+
+# In[22]:
+
+
+Data["error"] = Data.Expenditures - a - b*Data.Age 
+Data.head()
+
+
+# In[23]:
+
+
+sum_sq_error = (Data.error ** 2).sum() # calculating the sum of squares
+
+
+# In[24]:
+
+
+## calclating ci in the dataset
+Data["c"] = (Data.Age - X_bar) / ((Data.Age - X_bar)**2).sum()
+Data.head(6) # showing the first few rows of the enhanced dataset
+
+
+# In[25]:
+
+
+beta = b - (Data.c * Data.error).sum()
+print("The value of beta is: ", beta)
+
+
+# In[27]:
+
+
+n = Data.shape[0] # number of entries
+s_b_sq = np.sqrt((((Data.error)**2).sum()) / ((n-2) * (((X - X_bar)**2).sum()))) 
+print("The value of standard error is: ", s_b_sq)
+
+
+# In[28]:
+
+
+t_b = (b)/s_b_sq
+print("The t value of b is: ", t_b)
+
+
+# In[29]:
+
+
+#Answer 1 summary
+print("Summary of Answer a results\n") 
+print("Value of a : ", a)
+print("Value of b : ",b)
+print("The standard error is: ", s_b_sq) 
+print("The t value of b is: ", t_b)
+
+
+# In[30]:
+
+
+#Question b
+plot = sns.regplot(data=Data, x= "Age", y= "Expenditures")
+plot.figure.set_size_inches(14,6)
+plot.axes.set_title('Expenditures against Age')
+
+
+# # Answer b
+# we can see that there is a decreasing trend between the age and expenditure. As the age decreases, expenditure also decrease. Additionally, we can also see two clusters of data around age groups less than 40 and greater than 40. These clusters will be analyzed further in next questions
+
+# In[31]:
+
+
+lt40 = Data.Age < 40
+Data_lt40 = Data[lt40].copy()
+Data_lt40
+
+
+# In[34]:
+
+
+## calculating the value of b which is needed to derive a
+Y = Data_lt40.Expenditures # the dependent variable
+X = Data_lt40.Age # the independent variable
+b = ((X*Y).mean() - X.mean()*Y.mean()) / ((X**2).mean() - (X.mean())**2) 
+X_bar = X.mean() # sample mean of age
+Y_bar = Y.mean()
+a = Y_bar - b*X_bar
+print("Summary of Answer c - part 1 results\n")
+print("Value of a is: ", a)
+print("Value of b is", b)
+## calculate error from a and b
+Data_lt40["error"] = Y - a - b*X
+sum_sq_error = (Data_lt40.error ** 2).sum() # calculating the sum of squares
+n = Data_lt40.shape[0] # number of entries
+s_b_sq = np.sqrt((((Data_lt40.error)**2).sum()) / ((n-2) * (((X - X_bar)**2).sum()))) 
+t_b = (b)/s_b_sq
+print("The standard error is: ", s_b_sq)
+print("The t value of b is: ", t_b)
+# sample data set with errors and c
+print("\n\n Sample data for the final dataset for Age less than 40 with error and c")
+Data_lt40.head()
+
+
+# In[35]:
+
+
+gt40 = Data.Age >= 40
+Data_gt40 = Data[gt40].copy()
+Data_gt40
+
+
+# In[37]:
+
+
+## calculating the value of b which is needed to derive a
+Y = Data_gt40.Expenditures # the dependent variable
+X = Data_gt40.Age # the independent variable
+b = ((X*Y).mean() - X.mean()*Y.mean()) / ((X**2).mean() - (X.mean())**2) 
+X_bar = X.mean() # sample mean of age
+Y_bar = Y.mean()
+a = Y_bar - b*X_bar
+print("Summary of Answer c - part 2 results\n")
+print("Value of a is: ", a)
+print("Value of b is", b)
+## calculate error from a and b
+Data_gt40["error"] = Y - a - b*X
+sum_sq_error = (Data_gt40.error ** 2).sum() # calculating the sum of squares
+n = Data_gt40.shape[0] # number of entries
+s_b_sq = np.sqrt((((Data_gt40.error)**2).sum()) / ((n-2) * (((X - X_bar)**2).sum()))) 
+t_b = (b)/s_b_sq
+print("The standard error is: ", s_b_sq)
+print("The t value of b is: ", t_b)
+
+# sample data set with errors and c
+print("\n\n Sample data for the final dataset for Age greater than or equal to 40 with error and c")
+Data_gt40.head()
+
+
+# In[38]:
+
+
+fig, (ax1, ax2) = plt.subplots(ncols=2, sharey=True)
+sns.regplot(x = Data_lt40.Age, y = Data_lt40.Expenditures, ax = ax1)
+ax1.figure.set_size_inches(14,6)
+ax1.axes.set_title('Expenditures against Age less than 40')
+sns.regplot(x = Data_gt40.Age, y = Data_gt40.Expenditures, ax = ax2)
+ax2.figure.set_size_inches(14,6)
+ax2.axes.set_title('Expenditures against Age greater than or equal to 40')
+
+
+# # Answer d
+# 
+# Splitting the data into the two clusters mentioned in answer b gives opposite inference to what was seen in answer b. There is now an increasing relationship between age and expenditure i.e. as age increases, expenditure also increases. The reason for the overall decreasing trend was because the expenditure of people with age greater than 40 is generally lower than those with age less than 40
+# within the two clusters, people with age less than 40 have more sensitive spending habits. The curve for this cluster is steeper compared to the other which indicates that the effect of age on the spending habits is more in age group less than 40 compared to age group greater than 40
+
+# In[ ]:
+
+
+
+
