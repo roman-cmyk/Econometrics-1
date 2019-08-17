@@ -6,8 +6,8 @@
 
 Assignment 01:
 
-* Simple Resgression
+* [Simple Regression](https://github.com/fedorovic82/Econometrics/tree/master/Assignment01) 
 
 Assignment 02:
 
-* Multiple Regression
+* [Multiple Regression](https://github.com/fedorovic82/Econometrics/tree/master/Assignment02)
