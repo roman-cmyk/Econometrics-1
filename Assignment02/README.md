@@ -1,6 +1,6 @@
 # Assignment 02: Multiple Regression
 
-This assigment from EUR Econometrics contains multiple regression. This repo contains:
+This assigment from EUR Econometrics contains multiple regression. This repo includes:
 
 * Needed code to find answers
 * Graded assignment in python, notebok and pdf
