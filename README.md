@@ -11,3 +11,7 @@ Assignment 01:
 Assignment 02:
 
 * [Multiple Regression](https://github.com/fedorovic82/Econometrics/tree/master/Assignment02)
+
+Assignment 03:
+
+* [Model Specification](https://github.com/fedorovic82/Econometrics/tree/master/Assignment03)
