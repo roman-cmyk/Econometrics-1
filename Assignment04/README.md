@@ -1,4 +1,4 @@
-Assignment 04: Endogeneity
+# Assignment 04: Endogeneity
 
 This assigment from EUR Econometrics is about Endogeneity. This repo includes:
 
